@@ -24,33 +24,45 @@ enum FlightStatus: String {
     case landed = "Landed"
     case departed = "Departed"
     case boarding = "Boarding"
+    case onTime = "On Time"
 }
 
 struct Airport {
     var destination: String
-    var arrival: String
     
 }
 struct Flight {
-    var depatureTime: Date?
+    var flightDestination: String
+    var flightCode: String
+    var departureTime: Date?
     var terminal: String?
+    var flightStatus: FlightStatus
 }
 
 class DepartureBoard {
-    var flight: String
-    var currentAirport: String
-    var flightStatus: FlightStatus
+    
+    var currentAirport: Airport
+    var flights: [Flight]
     
     
-    init(flight: String, currentAirport: String, flightStatus: FlightStatus) {
-        self.flight = flight
+    init(currentAirport: Airport, flights: [Flight] ) {
         self.currentAirport = currentAirport
-        self.flightStatus = flightStatus
+        self.flights = flights
     }
     
 }
-let myFlight = DepartureBoard(flight: "D01", currentAirport: "JFK Airport", flightStatus: .boarding.rawValue)
-print(myFlight.flightStatus)
+let myFlight = DepartureBoard(currentAirport: .init(destination: "JFK"), flights: [Flight.init(flightDestination: "New York", flightCode: String(2107), departureTime: .distantPast, terminal: "D01", flightStatus: .boarding)])
+var myFlight1 = DepartureBoard(currentAirport: .init(destination: "JFK AIRPORT"), flights: [Flight.init(flightDestination: "Los Angeles", flightCode: String(4547), departureTime: .distantFuture, terminal: "B12" , flightStatus: .onTime)] )
+myFlight.flights
+myFlight1.flights
+var myFlight2 = DepartureBoard(currentAirport: .init(destination: "JFK AIRPORT"), flights: [Flight.init(flightDestination: "San Diego", flightCode: String(780), departureTime: .init(), terminal: "C03", flightStatus: .boarding)])
+
+var myFlight3 = DepartureBoard(currentAirport: .init(destination: "JFK AIRPORT"), flights: [Flight.init(flightDestination: "Houston", flightCode: String(4649), departureTime: .distantFuture, terminal: "E83", flightStatus: .onTime)])
+
+var myFlight4 = DepartureBoard(currentAirport: .init(destination: "JFK AIRPORT"), flights: [Flight.init(flightDestination: "El Paso", flightCode: String(5296), departureTime: .distantFuture, terminal: "E83", flightStatus: .onTime)])
+
+var myFlight5 = DepartureBoard(currentAirport: .init(destination: "JFK AIRPORT"), flights: [Flight.init(flightDestination: "Washington", flightCode: String(6729), departureTime: .init(), terminal: "D09", flightStatus: .boarding)])
+var myFlight6 = DepartureBoard(currentAirport: .init(destination: "JFK AIRPORT"), flights: [Flight.init(flightDestination: "Phoenix", flightCode: String(7383), departureTime: .init(), terminal: "E70", flightStatus: .boarding)])
 //: ## 2. Create 3 flights and add them to a departure board
 //: a. For the departure time, use `Date()` for the current time
 //:
@@ -61,8 +73,16 @@ print(myFlight.flightStatus)
 //: d. Make one of the flights have a `nil` terminal because it has not been decided yet.
 //:
 //: e. Stretch: Look at the API for [`DateComponents`](https://developer.apple.com/documentation/foundation/datecomponents?language=objc) for creating a specific time
+//let newFlights = DepartureBoard(currentAirport: .init(destination: "JFK"), flights: [Flight.init(flightDestination: "India", flightCode: String(49823), departureTime: nil, terminal: nil, flightStatus: .canceled)])
 
+let newFlight1 = Flight(flightDestination: "India", flightCode: String(43232), departureTime: .init(), terminal: "C9", flightStatus: .boarding)
+let newFlight2 = Flight(flightDestination: "Greece", flightCode: String(56532), departureTime: .distantFuture, terminal: "B12", flightStatus: .onTime)
+let newFlight3 = Flight(flightDestination: "China", flightCode: String(9832), departureTime: nil, terminal: nil, flightStatus: .canceled)
 
+let addFlights = DepartureBoard(currentAirport: .init(destination: "JFK"), flights: [newFlight1])
+
+addFlights.flights.append(newFlight2)
+addFlights.flights.append(newFlight3)
 
 //: ## 3. Create a free-standing function that can print the flight information from the `DepartureBoard`
 //: a. Use the function signature: `printDepartures(departureBoard:)`
